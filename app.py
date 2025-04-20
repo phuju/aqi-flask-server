@@ -6,7 +6,7 @@ app = Flask(__name__)
 stored_data = []
 
 # Endpoint to receive data from ESP32 via POST
-@app.route('/send-data', methods=['POST'])
+@app.route('/', methods=['POST'])
 def receive_data():
     data = request.get_json()
     print("Received:", data)
@@ -14,7 +14,7 @@ def receive_data():
     return jsonify({'status': 'success'})
 
 # Endpoint to show collected data via browser (GET)
-@app.route('/data', methods=['GET'])
+@app.route('/', methods=['GET'])
 def show_data():
     return jsonify(stored_data)
 
