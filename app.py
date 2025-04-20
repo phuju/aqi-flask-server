@@ -7,7 +7,7 @@ latest_data = {}
 def home():
     return "Flask server is active"
 
-@app.route('/send-data', methods=['POST'])
+@app.route('/data', methods=['POST'])
 def receive_data():
     global latest_data
     data = request.get_json()
