@@ -1,25 +1,24 @@
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-latest_data = {}
 
+# Store data from ESP32 here
+stored_data = []
+
+# Endpoint to receive data from ESP32 via POST
+@app.route('/send-data', methods=['POST'])
+def receive_data():
+    data = request.get_json()
+    print("Received:", data)
+    stored_data.append(data)
+    return jsonify({'status': 'success'})
+
+# Endpoint to show collected data via browser (GET)
+@app.route('/data', methods=['GET'])
+def show_data():
+    return jsonify(stored_data)
+
+# Root route
 @app.route('/')
 def home():
     return "Flask server is active"
-
-@app.route('/data', methods=['POST'])
-def receive_data():
-    global latest_data
-    data = request.get_json()
-    print("Received data:", data)
-    if data:
-        latest_data = data
-        return jsonify({'status': 'received'}), 200
-    return jsonify({'status': 'error'}), 400
-
-@app.route('/data', methods=['GET'])
-def send_data():
-    return jsonify(latest_data)
-
-if __name__ == '__main__':
-    app.run()
